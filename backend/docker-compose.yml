@@ -4,9 +4,6 @@ services:
   mongo:
     image: mongo
     restart: always
-    environment:
-        MONGO_INITDB_ROOT_USERNAME: zap
-        MONGO_INITDB_ROOT_PASSWORD: boom
     volumes:
       - ./data:/data/db/
     ports:
@@ -16,8 +13,6 @@ services:
     image: mongo-express
     restart: unless-stopped
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=zap
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=boom
       - ME_CONFIG_MONGODB_SERVER=mongo
     depends_on:
       - mongo
