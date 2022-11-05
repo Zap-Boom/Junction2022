@@ -87,7 +87,6 @@ const App: React.FC = () => {
   }, []);
 
   const appData = mergeData(todos, schedule);
-  // console.log(appData);
 
   const handleContinueClick = async () => {
     switch (view) {
