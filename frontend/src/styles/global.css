@@ -1,11 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.cdnfonts.com/css/press-start-2p");
 
 h1 {
   color: #ef6776 !important;
   filter: drop-shadow(5px 5px 4px #93b1be);
   text-align: center;
+  font-family: "Press Start 2P", sans-serif;
+  font-size: 20px !important;
+  margin-bottom: 16px !important;
 }
 
 .frontPageContainer {
