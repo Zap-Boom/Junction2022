@@ -1,4 +1,4 @@
-import { IOutsideHours, OutsideHours } from "../schemas"
+import {ElectricityPrice, IOutsideHours, OutsideHours} from "../schemas"
 import { db } from "../app"
 
 export const insertOutsideHours = async (
@@ -17,4 +17,10 @@ export const insertOutsideHours = async (
         })
         return await newEntry.save()
     }
+}
+
+export const getOutsideHours = async () => {
+    return await OutsideHours.find({}).then((res) => {
+        return res
+    })
 }

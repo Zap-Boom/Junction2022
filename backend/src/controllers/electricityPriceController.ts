@@ -6,7 +6,7 @@ import {
     setMinutes,
     setSeconds,
 } from "date-fns"
-import { ElectricityPrice, IElectrictyPrice } from "../schemas"
+import {ElectricityPrice, IElectrictyPrice, Todo} from "../schemas"
 import { db } from "../app"
 
 export const createMockData = async () => {
@@ -60,4 +60,10 @@ const getRandomeurCentkWH = (previousVal: number | null): number => {
         res = Math.random() * (max - min) + min
     }
     return Math.floor(res)
+}
+
+export const getElectricityPrices = async () => {
+    return await ElectricityPrice.find({}).then((res) => {
+        return res
+    })
 }
