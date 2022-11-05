@@ -4,6 +4,7 @@ import { swapView } from "./components/utils";
 import "./styles/global.css";
 import FrontPage from "./pages/FrontPage";
 import DayActivitySelection from "./pages/DayActivitySelection";
+import DayPlanSelection from "./pages/DayPlanSelection";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
@@ -23,10 +24,14 @@ const App: React.FC = () => {
   const handleContinueClick = () => {
     switch (view) {
       case "start":
-        setView("plan");
+        setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
-      case "plan":
+      case "dayActivitySelection":
+        setView("dayPlanSelection");
+        swapView(<DayPlanSelection />);
+        break;
+      case "dayPlanSelection":
         setView("cal");
         swapView(<Calendar list={todos} />);
         break;
@@ -36,10 +41,14 @@ const App: React.FC = () => {
   const handleBackClick = () => {
     switch (view) {
       case "cal":
-        setView("plan");
+        setView("dayPlanSelection");
+        swapView(<DayPlanSelection />);
+        break;
+      case "dayPlanSelection":
+        setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
-      case "plan":
+      case "dayActivitySelection":
         setView("start");
         swapView(<FrontPage />);
         break;
