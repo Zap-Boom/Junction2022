@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "./pages/Calendar/calendar";
-import { swapView } from "./components/utils";
+import { mergeData, swapView } from "./utils";
 import DayActivitySelection from "./pages/DayActivitySelection";
 import DayPlanSelection from "./pages/DayPlanSelection";
 import FrontPage from "./pages/FrontPage";
@@ -10,6 +10,7 @@ import HoursInputScreen from "./pages/HoursInputScreen";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
+  const [finalTodos, setFinalTodos] = useState<any[]>([]);
   const [view, setView] = useState("start");
   const [schedule, setSchedule] = useState<any[]>([]);
   // const [view, setView] = useState("dayActivitySelection");
@@ -23,47 +24,71 @@ const App: React.FC = () => {
   async function callScheduleBackend() {
     await fetch("http://localhost:3001/schedule", {
       method: "POST",
+    }).then(async () => {
+      await fetch("http://localhost:3001/schedule")
+        .then((response) => response.json())
+        .then((data) => {
+          setSchedule(data);
+        })
+        .then(async () => {
+          await fetch("http://localhost:3001/todos")
+            .then((response) => response.json())
+            .then((data) => {
+              setTodos(data);
+            });
+        });
     });
-
-    await fetch("http://localhost:3001/schedule")
-      .then((response) => response.json())
-      .then((data) => {
-        setSchedule(data);
-      });
   }
 
   useEffect(() => {
-    fetch("http://localhost:3001/todos")
-      .then((response) => response.json())
-      .then((data) => {
-        setTodos(data);
+    // Hacky solution to make this list up to date
+    if (view === "cal") {
+      swapView(<Calendar list={finalTodos} />);
+    }
+  }, [finalTodos]);
+
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      await fetch("http://localhost:3001/schedule", {
+        method: "POST",
+      }).then(async () => {
+        await fetch("http://localhost:3001/schedule")
+          .then((response) => response.json())
+          .then((data) => {
+            setSchedule(data);
+          })
+          .then(async () => {
+            await fetch("http://localhost:3001/todos")
+              .then((response) => response.json())
+              .then((data) => {
+                setFinalTodos(data);
+              });
+          });
       });
+    };
 
-    // // declare the data fetching function
-    // const fetchData = async () => {
-    //   await callScheduleBackend();
-    // };
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [todos]);
 
-    // // call the function
-    // fetchData()
-    //   // make sure to catch any error
-    //   .catch(console.error);
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      await callScheduleBackend();
+    };
 
-    // await callScheduleBackend();
-
-    // fetch("http://localhost:3001/schedule", {
-    //   method: "POST",
-    // }).then((response) => response.json());
-
-    // fetch("http://localhost:3001/schedule")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setSchedule(data);
-    //   });
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
   }, []);
 
-  console.log(todos);
-  console.log(schedule);
+  const appData = mergeData(todos, schedule);
+  // console.log(appData);
+
   const handleContinueClick = async () => {
     switch (view) {
       case "start":
@@ -72,11 +97,12 @@ const App: React.FC = () => {
         break;
       case "dayActivitySelection":
         await callScheduleBackend().then(() => {
-          console.log("asd");
+          setView("cal");
+          swapView(<Calendar list={finalTodos} />);
         });
 
-        setView("cal");
-        swapView(<Calendar list={todos} />);
+        // setView("cal");
+        // swapView(<Calendar list={todos} />);
 
         // setView("dayPlanSelection");
         // swapView(<DayPlanSelection />);
