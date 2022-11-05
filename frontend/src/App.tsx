@@ -56,15 +56,15 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto my-2">
       <div id="view">
         <FrontPage />
       </div>
-      <button className="mx-5" onClick={() => handleContinueClick()}>
-        Continue
-      </button>
       <button className="mx-5" onClick={() => handleBackClick()}>
         Back
+      </button>
+      <button className="mx-5" onClick={() => handleContinueClick()}>
+        Continue
       </button>
     </div>
   );

@@ -65,7 +65,7 @@ const DayActivitySelection: React.FC<{ todos: any[] }> = (todos) => {
   }
 
   return (
-    <Page title={"Today I want to"}>
+    <Page title={"Today I want to"} gradientBg={false}>
       <div>
         {todos.todos.map((todo) => {
           return (

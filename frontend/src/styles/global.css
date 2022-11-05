@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h1 {
+  color: #ef6776 !important;
+  filter: drop-shadow(5px 5px 4px #93b1be);
+  text-align: center;
+}
+
+.frontPageContainer {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(182, 195, 175, 1) 100%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+.pageContainer {
+  background: rgb(255, 255, 255);
+}
+
+.dayTypeContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+  width: 100%;
+}
+
+.dayTypeContainer b {
+  margin-left: 8px;
+}
