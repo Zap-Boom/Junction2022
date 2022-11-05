@@ -11,6 +11,7 @@ import HoursInputScreen from "./pages/HoursInputScreen";
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
   const [view, setView] = useState("start");
+  const [schedule, setSchedule] = useState<any[]>([]);
   // const [view, setView] = useState("dayActivitySelection");
   // const [stayingAtHome, setStayingAtHome] = useState(true);
 
@@ -25,8 +26,20 @@ const App: React.FC = () => {
       .then((data) => {
         setTodos(data);
       });
+
+    fetch("http://localhost:3001/schedule", {
+      method: "POST",
+    }).then((response) => response.json());
+
+    fetch("http://localhost:3001/schedule")
+      .then((response) => response.json())
+      .then((data) => {
+        setSchedule(data);
+      });
   }, []);
 
+  console.log(todos);
+  console.log(schedule);
   const handleContinueClick = () => {
     switch (view) {
       case "start":
