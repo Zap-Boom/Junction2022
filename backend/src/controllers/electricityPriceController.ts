@@ -8,10 +8,14 @@ import {
 } from "date-fns"
 import { ElectricityPrice, IElectrictyPrice, Todo } from "../schemas"
 import { db } from "../app"
+import { calculateSchedule } from "./scheduleMaker"
 
 export const createMockData = async () => {
     // db.collection('electricityprices');
-    await db.collection("electricityprices").deleteMany({})
+    let electricityprices = await ElectricityPrice.find({})
+    if (electricityprices != null && electricityprices.length > 0) return
+    if (await db.collection("electricityprices").find({}))
+        await db.collection("electricityprices").deleteMany({})
     let curDate = setMinutes(new Date(), 0)
     curDate = setSeconds(curDate, 0)
     curDate = setMilliseconds(curDate, 0)

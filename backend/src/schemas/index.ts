@@ -19,6 +19,7 @@ export interface IScheduleItem {
     endDate: Date
     level?: string
     type: string
+    avgkWh?: number
 }
 
 export interface IElectrictyPrice {
@@ -51,6 +52,7 @@ export const ScheduleItemSchema: Schema = new mongoose.Schema({
     endDate: { type: Date, required: true },
     type: { type: String, enum: ["CALENDAR_ENTRY", "TODO_ENTRY"] },
     level: { type: String, enum: ["LOW", "MEDIUM", "HIGH"] },
+    avgkWh: { type: Number },
 })
 
 export const ElectricityPriceSchema: Schema = new mongoose.Schema({
