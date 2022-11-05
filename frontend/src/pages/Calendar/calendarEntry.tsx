@@ -7,6 +7,15 @@ type Props = {
 
 const CalEntry = (props: Props) => {
   const { item } = props;
+
+  const startDate = new Date(item.taskStart);
+  const endDate = new Date(item.taskEnd);
+
+  const startHour = startDate.getUTCHours();
+  const startMinute = startDate.getUTCMinutes();
+  const endHour = endDate.getUTCHours();
+  const endMinute = endDate.getUTCMinutes();
+
   return (
     <div className="flex md:contents">
       <div className="relative md:mx-auto">
@@ -17,11 +26,10 @@ const CalEntry = (props: Props) => {
       </div>
       <div className="col-start-2 col-end-10 p-4 my-4 mr-auto bg-blue-500 border shadow-md rounded-xl">
         <h3 className="mb-1 text-lg font-semibold">
-          {item.startHour > 10 ? item.startHour : `0${item.startHour}`}:
-          {item.startMinute < 10 ? `0${item.startMinute}` : item.startMinute} -{" "}
-          {item.endHour > 10 ? item.endHour : `0${item.endHour}`}:
-          {item.endMinute < 10 ? `0${item.endMinute}` : item.endMinute} -{" "}
-          {item.name}
+          {startHour > 10 ? startHour : `0${startHour}`}:
+          {startMinute < 10 ? `0${startMinute}` : startMinute} -{" "}
+          {endHour > 10 ? endHour : `0${endHour}`}:
+          {endMinute < 10 ? `0${endMinute}` : endMinute} - {item.name}
         </h3>
       </div>
     </div>
