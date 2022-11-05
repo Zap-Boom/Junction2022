@@ -16,6 +16,7 @@ const Page: React.FC<Props> = ({title, children}) => {
                     <div className="px-5">
                         <div className="container">
                             {children}
+                            <br />
                         </div>
                     </div>
                 </div>
