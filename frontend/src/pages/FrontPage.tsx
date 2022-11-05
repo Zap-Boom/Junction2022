@@ -4,7 +4,8 @@ import Page from "../components/page";
 
 const DayType: React.FC<{
   text: string;
-}> = ({ text }) => {
+  img: string;
+}> = ({ text, img }) => {
   return (
     <div key={text}>
       <button
@@ -14,7 +15,7 @@ const DayType: React.FC<{
       >
         <div className="dayTypeContainer">
           <div>
-            <img src="https://i.imgur.com/Qmvwt8l.png" alt="Button" />
+            <img src={img} alt="Button" />
           </div>
           <div>
             <br />
@@ -30,10 +31,10 @@ const DayType: React.FC<{
 const FrontPage: React.FC = () => {
   return (
     <Page title={"Today is..."} gradientBg>
-      <DayType text="Just a regular weekday" />
-      <DayType text="Just a regular off-work day" />
-      <DayType text="Hangover mode" />
-      <DayType text="Create a new schedule" />
+      <DayType text="Just a regular weekday" img="/images/rect1.png" />
+      <DayType text="Just a regular off-work day" img="/images/rect2.png" />
+      <DayType text="Hangover mode" img="/images/rect3.png" />
+      <DayType text="Create a new schedule" img="/images/plus.png" />
     </Page>
   );
 };
