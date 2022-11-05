@@ -20,8 +20,14 @@ const ActivityComponent: React.FC<{
           setSelected(!selected);
         }}
       >
-        <div>
-          <b>{text}</b>
+        <div className="dayTypeContainer">
+          <div>
+            <img src="https://i.imgur.com/rA5XE67.png" alt="Button" />
+          </div>
+          <div>
+            <br />
+            <b>{text}</b>
+          </div>
         </div>
       </button>
       {selected ? (

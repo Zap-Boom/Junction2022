@@ -14,7 +14,7 @@ const DayType: React.FC<{
       >
         <div className="dayTypeContainer">
           <div>
-            <img src="https://i.imgur.com/Qmvwt8l.png" alt="Logo" />
+            <img src="https://i.imgur.com/Qmvwt8l.png" alt="Button" />
           </div>
           <div>
             <br />
