@@ -110,11 +110,11 @@ const ActivityComponent: React.FC<{
   );
 };
 
-const DayActivitySelection: React.FC<{ todos: any[] }> = (todos) => {
+const DayActivitySelection: React.FC<{ data: any[] }> = ({ data }) => {
   return (
     <Page title={"Today I want to"} gradientBg={false}>
       <div>
-        {todos.todos.map((todo) => {
+        {data.map((todo) => {
           return (
             <ActivityComponent id={todo._id} text={todo.name} key={todo.name} />
           );

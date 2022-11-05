@@ -2,7 +2,7 @@ import React from "react";
 import { Item } from "../../types";
 
 type Props = {
-  item: Item;
+  item: any;
 };
 
 const CalEntry = (props: Props) => {
@@ -17,11 +17,7 @@ const CalEntry = (props: Props) => {
       </div>
       <div className="col-start-2 col-end-10 p-4 my-4 mr-auto bg-blue-500 border shadow-md rounded-xl">
         <h3 className="mb-1 text-lg font-semibold">
-          {item.startHour > 10 ? item.startHour : `0${item.startHour}`}:
-          {item.startMinute < 10 ? `0${item.startMinute}` : item.startMinute} -{" "}
-          {item.endHour > 10 ? item.endHour : `0${item.endHour}`}:
-          {item.endMinute < 10 ? `0${item.endMinute}` : item.endMinute} -{" "}
-          {item.name}
+          {item.taskStart} - {item.taskEnd}: {item.name}
         </h3>
       </div>
     </div>

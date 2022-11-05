@@ -12,13 +12,6 @@ const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
   const [view, setView] = useState("start");
   const [schedule, setSchedule] = useState<any[]>([]);
-  // const [view, setView] = useState("dayActivitySelection");
-  // const [stayingAtHome, setStayingAtHome] = useState(true);
-
-  // function changeStayingAtHome(stayingAtHomeState: boolean) {
-  //   console.log("asd");
-  //   setStayingAtHome(stayingAtHomeState);
-  // }
 
   useEffect(() => {
     fetch("http://localhost:3001/todos")
@@ -39,50 +32,29 @@ const App: React.FC = () => {
   }, []);
 
   const appData = mergeData(todos, schedule);
-  console.log(appData);
 
   const handleContinueClick = () => {
     switch (view) {
       case "start":
         setView("dayActivitySelection");
-        swapView(<DayActivitySelection todos={todos} />);
+        swapView(<DayActivitySelection data={appData} />);
         break;
       case "dayActivitySelection":
         setView("cal");
-        swapView(<Calendar list={todos} />);
-        // setView("dayPlanSelection");
-        // swapView(<DayPlanSelection />);
+        swapView(<Calendar data={appData} />);
         break;
-      // case "dayPlanSelection":
-      //   setView("hoursInputScreen");
-      //   swapView(<HoursInputScreen />);
-      //   break;
-      // case "dayPlanSelection":
-      //   setView("cal");
-      //   swapView(<Calendar list={todos} />);
-      //   break;
-      // case "hoursInputScreen":
-      //   setView("cal");
-      //   swapView(<Calendar list={todos} />);
-      //   break;
     }
   };
 
   const handleBackClick = () => {
     switch (view) {
       case "cal":
-        //   setView("hoursInputScreen");
-        //   swapView(<HoursInputScreen />);
-        //   break;
-        // case "hoursInputScreen":
-        // setView("dayPlanSelection");
-        // swapView(<DayPlanSelection />);
         setView("dayActivitySelection");
-        swapView(<DayActivitySelection todos={todos} />);
+        swapView(<DayActivitySelection data={appData} />);
         break;
       case "dayPlanSelection":
         setView("dayActivitySelection");
-        swapView(<DayActivitySelection todos={todos} />);
+        swapView(<DayActivitySelection data={appData} />);
         break;
       case "dayActivitySelection":
         setView("start");
@@ -95,7 +67,6 @@ const App: React.FC = () => {
     <div className="max-w-2xl mx-auto my-2">
       <div id="view">
         <FrontPage />
-        {/* <DayActivitySelection todos={todos} /> */}
       </div>
       <button className="mx-5" onClick={() => handleBackClick()}>
         Back
