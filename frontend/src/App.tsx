@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "./pages/Calendar/calendar";
-import { swapView } from "./components/utils";
+import { mergeData, swapView } from "./utils";
 import DayActivitySelection from "./pages/DayActivitySelection";
 import DayPlanSelection from "./pages/DayPlanSelection";
 import FrontPage from "./pages/FrontPage";
@@ -38,8 +38,9 @@ const App: React.FC = () => {
       });
   }, []);
 
-  console.log(todos);
-  console.log(schedule);
+  const appData = mergeData(todos, schedule);
+  console.log(appData);
+
   const handleContinueClick = () => {
     switch (view) {
       case "start":
