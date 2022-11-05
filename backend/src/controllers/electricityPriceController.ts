@@ -11,14 +11,7 @@ import { db } from "../app"
 
 export const createMockData = async () => {
     // db.collection('electricityprices');
-    await db
-        .dropCollection("electricityprices")
-        .then((res) => {
-            console.log(res)
-        })
-        .catch((err) => {
-            console.error("No collection found")
-        })
+    await db.collection("electricityprices").deleteMany({})
     let curDate = setMinutes(new Date(), 0)
     curDate = setSeconds(curDate, 0)
     curDate = setMilliseconds(curDate, 0)
