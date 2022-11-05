@@ -3,6 +3,8 @@ import Calendar from "./components/calendar";
 import TodoList from "./components/todoList";
 import "./styles/global.css";
 import { Item } from "./types";
+import FrontPage from "./pages/FrontPage";
+import DayActivitySelection from "./pages/DayActivitySelection";
 
 const App: React.FC = () => {
   const dummyList: Item[] = [
@@ -19,6 +21,8 @@ const App: React.FC = () => {
 
   return (
     <div>
+        <FrontPage />
+        <DayActivitySelection />
       <p className="text-sm font-medium text-orange-200">Hello, yall</p>
       <TodoList list={dummyList} />
       <Calendar list={dummyList} />
