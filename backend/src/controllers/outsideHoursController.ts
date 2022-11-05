@@ -4,7 +4,7 @@ import { db } from "../app"
 export const insertOutsideHours = async (
     outsideHours: IOutsideHours | null
 ) => {
-    let res: boolean = false
+    const res: boolean = false
     await db.collection("outsidehours").deleteMany({})
     if (
         outsideHours != null &&

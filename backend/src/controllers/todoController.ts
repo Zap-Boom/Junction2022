@@ -16,7 +16,7 @@ export const insertDefaultTodos = async () => {
 }
 
 export const getTodos = async () => {
-    return Todo.find({}).then((res) => {
+    return await Todo.find({}).then((res) => {
         return res
     })
 }
@@ -104,7 +104,18 @@ const defaultTodos = () => {
             startMinute: 0,
             endHour: 23,
             endMinute: 59,
-        })
+        }),
+        new Todo({
+            name: "Floor Heating",
+            level: "HIGH",
+            duration: 120,
+            isChosen: true,
+            startHour: 0,
+            startMinute: 0,
+            endHour: 23,
+            endMinute: 59,
+            isHeating: true
+        }),
     )
 
     return todoItems

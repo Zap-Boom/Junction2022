@@ -7,9 +7,9 @@ import {
 } from "./controllers/todoController"
 import { createMockData } from "./controllers/electricityPriceController"
 import { insertOutsideHours } from "./controllers/outsideHoursController"
-import { IOutsideHours, ITodo, Todo } from "./schemas"
+import { IOutsideHours, Todo } from "./schemas"
 import bodyParser from "body-parser"
-import { parse, parseISO } from "date-fns"
+import { parseISO } from "date-fns"
 
 // Start Mongoose connection
 const uri: string = "mongodb://localhost:27017/junction"
@@ -42,7 +42,7 @@ app.post("/todo", async (req: Request, res: Response) => {
         body.name &&
         body.level
     ) {
-        let input = new Todo({
+        const input = new Todo({
             name: body.name,
             duration: body.duration,
             level: body.level,

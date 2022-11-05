@@ -15,10 +15,10 @@ export const createMockData = async () => {
     let curDate = setMinutes(new Date(), 0)
     curDate = setSeconds(curDate, 0)
     curDate = setMilliseconds(curDate, 0)
-    let after24hrs = addHours(curDate, 24)
+    const after24hrs = addHours(curDate, 24)
     let elPriceVal: number | null = null
     let isRunning: boolean = true
-    const eurCentkWhArr: Array<IElectrictyPrice> = []
+    const eurCentkWhArr: IElectrictyPrice[] = []
     while (isRunning) {
         elPriceVal = getRandomeurCentkWH(elPriceVal)
         curDate = addHours(curDate, 1)
