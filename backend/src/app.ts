@@ -1,9 +1,13 @@
 import express, { Application, Request, Response } from "express"
 import mongoose from "mongoose"
-import {insertDefaultTodos, insertTodo} from "./controllers/todoController"
+import {
+    getTodos,
+    insertDefaultTodos,
+    insertTodo,
+} from "./controllers/todoController"
 import { createMockData } from "./controllers/electricityPriceController"
 import { insertOutsideHours } from "./controllers/outsideHoursController"
-import { IOutsideHours } from "./schemas"
+import { IOutsideHours, ITodo, Todo } from "./schemas"
 import bodyParser from "body-parser"
 import { parse, parseISO } from "date-fns"
 
@@ -19,15 +23,46 @@ const app: Application = express()
 app.use(bodyParser.json())
 const port: number = 3001
 createMockData()
-insertDefaultTodos();
+insertDefaultTodos()
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello ")
 })
 
-app.get("/save-todo", async (req: Request, res: Response) => {
-    insertTodo()
-    res.send("SAVED!")
+app.post("/todo", async (req: Request, res: Response) => {
+    const body = req.body
+    let success = false
+    if (
+        body != null &&
+        body.startHour &&
+        body.startMinute &&
+        body.endHour &&
+        body.endMinute &&
+        body.duration &&
+        body.name &&
+        body.level
+    ) {
+        let input = new Todo({
+            name: body.name,
+            duration: body.duration,
+            level: body.level,
+            startHour: body.startHour,
+            startMinute: body.startMinute,
+            endHour: body.endHour,
+            endMinute: body.endMinute,
+            isChosen: true,
+        })
+
+        await insertTodo(input)
+        success = true
+    }
+    res.status(success ? 201 : 400)
+    res.send("")
+})
+
+app.get("/todos", async (req: Request, res: Response) => {
+    const todos = await getTodos()
+    res.json(todos)
 })
 
 app.post("/outside-hours", async (req: Request, res: Response) => {

@@ -5,17 +5,18 @@ export interface ITodo {
     level: String //consumption level
     duration: number //the time it takes for the task, minutes
     isChosen: boolean //if false, item will not be scheduled
-    startHour: number, // following 4 fields are to limit when the item should be scheduled
-    startMinute: number,
-    endHour: number,
+    startHour: number // following 4 fields are to limit when the item should be scheduled
+    startMinute: number
+    endHour: number
     endMinute: number
+    isBlocking: boolean
 }
 
 export interface IScheduleItem {
     name: string
     startDate: Date
     endDate: Date
-    level?: String
+    level?: string
     type: string
 }
 
@@ -38,7 +39,8 @@ export const TodoSchema: Schema = new mongoose.Schema({
     startHour: { type: Number, required: true, maxlength: 2 },
     startMinute: { type: Number, required: true, maxlength: 2 },
     endHour: { type: Number, required: true, maxlength: 2 },
-    endMinute: { type: Number, required: true, maxlength: 2 }
+    endMinute: { type: Number, required: true, maxlength: 2 },
+    isBlocking: { type: Boolean },
 })
 
 export const ScheduleItemSchema: Schema = new mongoose.Schema({
