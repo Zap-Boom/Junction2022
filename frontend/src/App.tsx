@@ -10,6 +10,7 @@ import HoursInputScreen from "./pages/HoursInputScreen";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
+  const [finalTodos, setFinalTodos] = useState<any[]>([]);
   const [view, setView] = useState("start");
   const [schedule, setSchedule] = useState<any[]>([]);
   // const [view, setView] = useState("dayActivitySelection");
@@ -20,36 +21,88 @@ const App: React.FC = () => {
   //   setStayingAtHome(stayingAtHomeState);
   // }
 
-  useEffect(() => {
-    fetch("http://localhost:3001/todos")
-      .then((response) => response.json())
-      .then((data) => {
-        setTodos(data);
-      });
-
-    fetch("http://localhost:3001/schedule", {
+  async function callScheduleBackend() {
+    await fetch("http://localhost:3001/schedule", {
       method: "POST",
-    }).then((response) => response.json());
+    }).then(async () => {
+      await fetch("http://localhost:3001/schedule")
+        .then((response) => response.json())
+        .then((data) => {
+          setSchedule(data);
+        })
+        .then(async () => {
+          await fetch("http://localhost:3001/todos")
+            .then((response) => response.json())
+            .then((data) => {
+              setTodos(data);
+            });
+        });
+    });
+  }
 
-    fetch("http://localhost:3001/schedule")
-      .then((response) => response.json())
-      .then((data) => {
-        setSchedule(data);
+  useEffect(() => {
+    // Hacky solution to make this list up to date
+    if (view === "cal") {
+      swapView(<Calendar list={finalTodos} />);
+    }
+  }, [finalTodos]);
+
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      await fetch("http://localhost:3001/schedule", {
+        method: "POST",
+      }).then(async () => {
+        await fetch("http://localhost:3001/schedule")
+          .then((response) => response.json())
+          .then((data) => {
+            setSchedule(data);
+          })
+          .then(async () => {
+            await fetch("http://localhost:3001/todos")
+              .then((response) => response.json())
+              .then((data) => {
+                setFinalTodos(data);
+              });
+          });
       });
+    };
+
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [todos]);
+
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      await callScheduleBackend();
+    };
+
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
   }, []);
 
   const appData = mergeData(todos, schedule);
-  console.log(appData);
 
-  const handleContinueClick = () => {
+  const handleContinueClick = async () => {
     switch (view) {
       case "start":
         setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
       case "dayActivitySelection":
-        setView("cal");
-        swapView(<Calendar list={todos} />);
+        await callScheduleBackend().then(() => {
+          setView("cal");
+          swapView(<Calendar list={finalTodos} />);
+        });
+
+        // setView("cal");
+        // swapView(<Calendar list={todos} />);
+
         // setView("dayPlanSelection");
         // swapView(<DayPlanSelection />);
         break;

@@ -14,9 +14,6 @@ const ActivityComponent: React.FC<{
       isChosen: selected,
     };
 
-    console.log("Selected: ", selected);
-    console.log("body: ", JSON.stringify(body));
-
     // TODO: Change this to a PUT
     fetch(`http://localhost:3001/todo/${id}`, {
       method: "PUT",
@@ -24,7 +21,7 @@ const ActivityComponent: React.FC<{
         "content-type": "application/json",
       },
       body: JSON.stringify(body),
-    }).then((data) => console.log(data));
+    });
   }, [selected]);
 
   let imgSrc = "";
