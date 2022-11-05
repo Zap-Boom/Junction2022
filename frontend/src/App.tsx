@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "./components/calendar";
-import TodoList from "./components/todoList";
 import { swapView } from "./components/utils";
 import "./styles/global.css";
 import { Item } from "./types";
 import FrontPage from "./pages/FrontPage";
 import DayActivitySelection from "./pages/DayActivitySelection";
+import DayPlanSelection from "./pages/DayPlanSelection";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
@@ -35,10 +35,14 @@ const App: React.FC = () => {
   const handleContinueClick = () => {
     switch (view) {
       case "start":
-        setView("plan");
+        setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
-      case "plan":
+      case "dayActivitySelection":
+        setView("dayPlanSelection");
+        swapView(<DayPlanSelection />);
+        break;
+      case "dayPlanSelection":
         setView("cal");
         swapView(<Calendar list={dummyList} />);
         break;
@@ -48,12 +52,16 @@ const App: React.FC = () => {
   const handleBackClick = () => {
     switch (view) {
       case "cal":
-        setView("plan");
+        setView("dayPlanSelection");
+        swapView(<DayPlanSelection />);
+        break;
+      case "dayPlanSelection":
+        setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
-      case "plan":
+      case "dayActivitySelection":
         setView("start");
-        swapView(<TodoList list={dummyList} />);
+        swapView(<FrontPage />);
         break;
     }
   };
@@ -61,7 +69,7 @@ const App: React.FC = () => {
   return (
     <div>
       <div id="view">
-        <TodoList list={dummyList} />
+        <FrontPage />
       </div>
       <button className="mx-5" onClick={() => handleContinueClick()}>
         Continue
