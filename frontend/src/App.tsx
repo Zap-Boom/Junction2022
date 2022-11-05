@@ -13,6 +13,8 @@ const App: React.FC = () => {
   const [finalTodos, setFinalTodos] = useState<any[]>([]);
   const [view, setView] = useState("start");
   const [schedule, setSchedule] = useState<any[]>([]);
+
+  const [appData, setAppData] = useState<any[]>([]);
   // const [view, setView] = useState("dayActivitySelection");
   // const [stayingAtHome, setStayingAtHome] = useState(true);
 
@@ -43,7 +45,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // Hacky solution to make this list up to date
     if (view === "cal") {
-      swapView(<Calendar list={finalTodos} />);
+      swapView(<Calendar list={appData} />);
     }
   }, [finalTodos]);
 
@@ -75,6 +77,10 @@ const App: React.FC = () => {
   }, [todos]);
 
   useEffect(() => {
+    setAppData(mergeData(todos, schedule));
+  }, [todos, schedule]);
+
+  useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
       await callScheduleBackend();
@@ -86,8 +92,6 @@ const App: React.FC = () => {
       .catch(console.error);
   }, []);
 
-  const appData = mergeData(todos, schedule);
-
   const handleContinueClick = async () => {
     switch (view) {
       case "start":
@@ -97,7 +101,7 @@ const App: React.FC = () => {
       case "dayActivitySelection":
         await callScheduleBackend().then(() => {
           setView("cal");
-          swapView(<Calendar list={finalTodos} />);
+          swapView(<Calendar list={appData} />);
         });
 
         // setView("cal");

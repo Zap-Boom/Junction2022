@@ -8,6 +8,8 @@ export interface Item {
   startHour: number;
   startMinute: number;
   _id: string;
+  taskStart: Date;
+  taskEnd: Date;
 }
 
 export interface TDList {
