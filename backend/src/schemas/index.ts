@@ -42,7 +42,7 @@ export const TodoSchema: Schema = new mongoose.Schema({
     endHour: { type: Number, required: true, maxlength: 2 },
     endMinute: { type: Number, required: true, maxlength: 2 },
     isBlocking: { type: Boolean },
-    isHeating: { type: Boolean }
+    isHeating: { type: Boolean },
 })
 
 export const ScheduleItemSchema: Schema = new mongoose.Schema({

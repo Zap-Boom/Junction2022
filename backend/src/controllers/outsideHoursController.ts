@@ -1,4 +1,4 @@
-import {ElectricityPrice, IOutsideHours, OutsideHours} from "../schemas"
+import { ElectricityPrice, IOutsideHours, OutsideHours } from "../schemas"
 import { db } from "../app"
 
 export const insertOutsideHours = async (

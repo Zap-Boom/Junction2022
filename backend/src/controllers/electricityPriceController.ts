@@ -6,7 +6,7 @@ import {
     setMinutes,
     setSeconds,
 } from "date-fns"
-import {ElectricityPrice, IElectrictyPrice, Todo} from "../schemas"
+import { ElectricityPrice, IElectrictyPrice, Todo } from "../schemas"
 import { db } from "../app"
 
 export const createMockData = async () => {
