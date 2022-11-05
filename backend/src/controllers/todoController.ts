@@ -1,4 +1,4 @@
-import { ITodo, Todo } from "../schemas"
+import {ElectricityPrice, ITodo, ITodoUpdateReq, Todo} from "../schemas"
 import { parseISO, setHours } from "date-fns"
 import { db } from "../app"
 import { Schema } from "mongoose"
@@ -9,11 +9,9 @@ export const insertTodo = async (todo: ITodo) => {
 }
 
 export const insertDefaultTodos = async () => {
-    const todo = await Todo.findOne({ name: "Laundry" })
-    if (todo == null) {
-        await db.collection("todos").insertMany(defaultTodos())
-        console.log("Inserted default todos!")
-    }
+    await Todo.find({}).then(async (res) => {
+        if (res != null && res.length === 0) await Todo.insertMany(defaultTodos());
+    })
 }
 
 export const getTodos = async () => {
@@ -22,15 +20,15 @@ export const getTodos = async () => {
     })
 }
 
-export const updateTodos = async (id: string, isChosen: boolean) => {
-    return await Todo.findByIdAndUpdate(id, { isChosen })
+export const updateTodos = async (id: string, fields: ITodoUpdateReq) => {
+    return await Todo.findByIdAndUpdate(id, fields)
 }
 
 const defaultTodos = () => {
     const todoItems = []
     todoItems.push(
         new Todo({
-            name: "Laundry",
+            name: "Do laundry",
             level: "MEDIUM",
             duration: 120,
             isChosen: true,
@@ -38,9 +36,10 @@ const defaultTodos = () => {
             startMinute: 0,
             endHour: 21,
             endMinute: 0,
+            tip: 'Select low if you have a small amount of clothes and a low temperature, high if you planning to wash in 90 C.'
         }),
         new Todo({
-            name: "Make coffee",
+            name: "Brew some coffee",
             level: "MEDIUM",
             duration: 30,
             isChosen: true,
@@ -50,7 +49,7 @@ const defaultTodos = () => {
             endMinute: 0,
         }),
         new Todo({
-            name: "Cook",
+            name: "Cook some dinner",
             level: "HIGH",
             duration: 60,
             isChosen: true,
@@ -60,7 +59,7 @@ const defaultTodos = () => {
             endMinute: 0,
         }),
         new Todo({
-            name: "Charge car",
+            name: "Charge the car",
             level: "HIGH",
             duration: 120,
             isChosen: true,
@@ -68,6 +67,7 @@ const defaultTodos = () => {
             startMinute: 0,
             endHour: 23,
             endMinute: 59,
+            tip: ''
         }),
         new Todo({
             name: "Sauna",
@@ -81,7 +81,7 @@ const defaultTodos = () => {
             isBlocking: true,
         }),
         new Todo({
-            name: "Dishes",
+            name: "Do the dishes",
             level: "MEDIUM",
             duration: 120,
             isChosen: true,
@@ -91,7 +91,7 @@ const defaultTodos = () => {
             endMinute: 0,
         }),
         new Todo({
-            name: "Dryer",
+            name: "Run the dryer",
             level: "HIGH",
             duration: 120,
             isChosen: true,
@@ -101,7 +101,7 @@ const defaultTodos = () => {
             endMinute: 0,
         }),
         new Todo({
-            name: "Watch TV",
+            name: "Watch some TV",
             level: "MEDIUM",
             duration: 120,
             isChosen: true,

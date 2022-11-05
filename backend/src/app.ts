@@ -11,7 +11,7 @@ import {
     getElectricityPrices,
 } from "./controllers/electricityPriceController"
 import { insertOutsideHours } from "./controllers/outsideHoursController"
-import { IOutsideHours, Todo } from "./schemas"
+import {IOutsideHours, ITodo, ITodoUpdateReq, Todo} from "./schemas"
 import bodyParser from "body-parser"
 import { parseISO } from "date-fns"
 import { calculateSchedule, getSchedule } from "./controllers/scheduleMaker"
@@ -86,9 +86,9 @@ app.get("/electricity-prices", async (req: Request, res: Response) => {
 app.put("/todo/:id", async (req: Request, res: Response) => {
     const body = req.body
     let success = false
-    if (body.isChosen != null && req.params != null && req.params.id != null) {
+    if (body != null && req.params != null && req.params.id != null) {
         let idParam: string = req.params.id
-        await updateTodos(idParam, body.isChosen)
+        await updateTodos(idParam, body as ITodoUpdateReq)
         success = true
     }
     res.status(success ? 200 : 400)

@@ -11,6 +11,7 @@ export interface ITodo {
     endMinute: number
     isBlocking: boolean
     isHeating: boolean
+    tip: string
 }
 
 export interface IScheduleItem {
@@ -33,6 +34,20 @@ export interface IOutsideHours {
     endDate: Date
 }
 
+export interface ITodoUpdateReq {
+    name?: string // name of task
+    level?: String // consumption level
+    duration?: number // the time it takes for the task, minutes
+    isChosen?: boolean // if false, item will not be scheduled
+    startHour?: number // following 4 fields are to limit when the item should be scheduled
+    startMinute?: number
+    endHour?: number
+    endMinute?: number
+    isBlocking?: boolean
+    isHeating?: boolean
+    tip?: string
+}
+
 export const TodoSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
     level: { type: String, required: true, enum: ["LOW", "MEDIUM", "HIGH"] },
@@ -44,6 +59,7 @@ export const TodoSchema: Schema = new mongoose.Schema({
     endMinute: { type: Number, required: true, maxlength: 2 },
     isBlocking: { type: Boolean },
     isHeating: { type: Boolean },
+    tip: { type: String }
 })
 
 export const ScheduleItemSchema: Schema = new mongoose.Schema({
@@ -58,7 +74,7 @@ export const ScheduleItemSchema: Schema = new mongoose.Schema({
 export const ElectricityPriceSchema: Schema = new mongoose.Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    eurCentkWh: { type: Number, required: true },
+    eurCentkWh: { type: Number, required: true }
 })
 
 export const OutsideHoursSchema: Schema = new mongoose.Schema({
