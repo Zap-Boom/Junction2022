@@ -1,72 +1,85 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/global.css";
 import Page from "../components/page";
 
-const ActivityComponent: React.FC<{ text: string, selectOption: any, id: string }> = ({ text, selectOption, id }) => {
+const ActivityComponent: React.FC<{
+  text: string;
+  selectOption: any;
+  id: string;
+}> = ({ text, selectOption, id }) => {
+  const [selected, setSelected] = useState<boolean>(false);
 
-    const [selected, setSelected] = useState<boolean>(false);
+  useEffect(() => {
+    selectOption(id, selected);
+  }, [selected]);
 
-    useEffect(() =>{
-        selectOption(id, selected);
-    }, [selected]);
-
-    return (
-        <div key={text}>
-            <button onClick={() => {
-                setSelected(!selected)
-            }}>
-                <div>
-                    {text}
-                </div>
-            </button>
-            { selected ?
-                <div>
-                    Select the electricity consumption estimation:
-                    <button>Low</button>
-                    <button>Medium</button>
-                    <button>High</button>
-                </div>
-            : null }
-            <br />
-            <br />
+  return (
+    <div key={text}>
+      <button
+        onClick={() => {
+          setSelected(!selected);
+        }}
+      >
+        <div>
+          <b>{text}</b>
         </div>
-    );
+      </button>
+      {selected ? (
+        <div>
+          Select the electricity consumption estimation:
+          <br />
+          <button>Low</button> &nbsp; - &nbsp;
+          <button>Medium</button> &nbsp; - &nbsp;
+          <button>High</button> &nbsp;
+        </div>
+      ) : null}
+      <br />
+    </div>
+  );
 };
 
-const DayActivitySelection: React.FC<{todos: any[]}> = (todos) => {
-    // Store users selected activities in an array for testing now
-    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+const DayActivitySelection: React.FC<{ todos: any[] }> = (todos) => {
+  // Store users selected activities in an array for testing now
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
 
-    function selectOption(option: string, selected: boolean) {
-        // TODO: Make these call an endpoint instead
-        console.log("selected option " + option + " as " + selected );
-        if(selected){
-            if(!selectedActivities.includes(option)){
-                setSelectedActivities([...selectedActivities, option])
-                fetch('http://localhost:3001')
-                    // .then((response) => response.json())
-                    .then((data) => console.log(data));
-            }
-        } else {
-            if(selectedActivities.includes(option)){
-                const selectedActivitiesWithoutOption = selectedActivities.filter(function (selectedOption) {
-                    return selectedOption !== option;
-                });
-                setSelectedActivities(selectedActivitiesWithoutOption);
-            }
-        }
+  function selectOption(option: string, selected: boolean) {
+    // TODO: Make these call an endpoint instead
+    console.log("selected option " + option + " as " + selected);
+    if (selected) {
+      if (!selectedActivities.includes(option)) {
+        setSelectedActivities([...selectedActivities, option]);
+        fetch("http://localhost:3001")
+          // .then((response) => response.json())
+          .then((data) => console.log(data));
+      }
+    } else {
+      if (selectedActivities.includes(option)) {
+        const selectedActivitiesWithoutOption = selectedActivities.filter(
+          function (selectedOption) {
+            return selectedOption !== option;
+          }
+        );
+        setSelectedActivities(selectedActivitiesWithoutOption);
+      }
     }
+  }
 
-
-    return (
-        <Page title={"Today I want to"}>
-            <div>
-                {todos.todos.map((todo) => {
-                    return (<ActivityComponent id={todo.name} text={todo.name} key={todo.name} selectOption={selectOption} />)
-                })}
-            </div>
-        </Page>
-    );
+  return (
+    <Page title={"Today I want to"}>
+      <div>
+        {todos.todos.map((todo) => {
+          return (
+            <ActivityComponent
+              id={todo.name}
+              text={todo.name}
+              key={todo.name}
+              selectOption={selectOption}
+            />
+          );
+        })}
+      </div>
+    </Page>
+  );
 };
 
 export default DayActivitySelection;
