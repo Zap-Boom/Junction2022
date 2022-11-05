@@ -31,3 +31,30 @@ h1 {
 .dayTypeContainer b {
   margin-left: 8px;
 }
+
+.electricityConsumptionButtonContainer {
+  text-align: center;
+}
+
+.electricityConsumptionButton {
+  padding: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 8px;
+}
+
+.btnSelected {
+  border: 2px solid black;
+}
+
+.btnGreen {
+  background-color: #5dda22;
+}
+
+.btnYellow {
+  background-color: #fad03c;
+}
+
+.btnRed {
+  background-color: #da9797;
+}

@@ -32,11 +32,25 @@ const ActivityComponent: React.FC<{
       </button>
       {selected ? (
         <div>
-          Select the electricity consumption estimation:
-          <br />
-          <button>Low</button> &nbsp; - &nbsp;
-          <button>Medium</button> &nbsp; - &nbsp;
-          <button>High</button> &nbsp;
+          <div className="electricityConsumptionButtonContainer">
+            Select the electricity consumption estimation:
+            <br />
+            <button className="electricityConsumptionButton btnGreen">
+              Low
+            </button>
+            <button className="electricityConsumptionButton btnYellow btnSelected">
+              Medium
+            </button>
+            <button className="electricityConsumptionButton btnRed">
+              High
+            </button>
+          </div>
+          {text === "Laundry" ? (
+            <i>
+              Tip: select low if you have a small amount of clothes and a low
+              temperature, high if you planning to wash in 90 C.
+            </i>
+          ) : null}
         </div>
       ) : null}
       <br />
