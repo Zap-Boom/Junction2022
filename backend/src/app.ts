@@ -5,11 +5,13 @@ import {
     insertDefaultTodos,
     insertTodo,
 } from "./controllers/todoController"
-import { createMockData } from "./controllers/electricityPriceController"
+import {createMockData, getElectricityPrices} from "./controllers/electricityPriceController"
 import { insertOutsideHours } from "./controllers/outsideHoursController"
-import { IOutsideHours, ITodo, Todo } from "./schemas"
+import { IOutsideHours, Todo } from "./schemas"
 import bodyParser from "body-parser"
-import { parse, parseISO } from "date-fns"
+import { parseISO } from "date-fns"
+import {calculateSchedule} from "./controllers/scheduleMaker";
+var cors = require("cors");
 
 // Start Mongoose connection
 const uri: string = "mongodb://localhost:27017/junction"
@@ -21,14 +23,17 @@ db.once("open", function () {
 
 const app: Application = express()
 app.use(bodyParser.json())
+app.use(cors());
 const port: number = 3001
 createMockData()
 insertDefaultTodos()
+calculateSchedule()
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello ")
 })
 
+app.use(cors());
 app.post("/todo", async (req: Request, res: Response) => {
     const body = req.body
     let success = false
@@ -42,7 +47,7 @@ app.post("/todo", async (req: Request, res: Response) => {
         body.name &&
         body.level
     ) {
-        let input = new Todo({
+        const input = new Todo({
             name: body.name,
             duration: body.duration,
             level: body.level,
@@ -63,6 +68,11 @@ app.post("/todo", async (req: Request, res: Response) => {
 app.get("/todos", async (req: Request, res: Response) => {
     const todos = await getTodos()
     res.json(todos)
+})
+
+app.get("/electricity-prices", async (req: Request, res: Response) => {
+    const electricityPrices = await getElectricityPrices()
+    res.json(electricityPrices)
 })
 
 app.post("/outside-hours", async (req: Request, res: Response) => {

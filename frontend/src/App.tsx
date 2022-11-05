@@ -4,6 +4,8 @@ import TodoList from "./components/todoList";
 import { swapView } from "./components/utils";
 import "./styles/global.css";
 import { Item } from "./types";
+import FrontPage from "./pages/FrontPage";
+import DayActivitySelection from "./pages/DayActivitySelection";
 
 const App: React.FC = () => {
   const dummyList: Item[] = [
@@ -56,6 +58,11 @@ const App: React.FC = () => {
       <button className="mx-5" onClick={() => handleBackClick()}>
         Back
       </button>
+        <FrontPage />
+        <DayActivitySelection />
+      <p className="text-sm font-medium text-orange-200">Hello, yall</p>
+      <TodoList list={dummyList} />
+      <Calendar list={dummyList} />
     </div>
   );
 };

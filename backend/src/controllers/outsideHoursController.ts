@@ -1,10 +1,10 @@
-import { IOutsideHours, OutsideHours } from "../schemas"
+import {ElectricityPrice, IOutsideHours, OutsideHours} from "../schemas"
 import { db } from "../app"
 
 export const insertOutsideHours = async (
     outsideHours: IOutsideHours | null
 ) => {
-    let res: boolean = false
+    const res: boolean = false
     await db.collection("outsidehours").deleteMany({})
     if (
         outsideHours != null &&
@@ -17,4 +17,10 @@ export const insertOutsideHours = async (
         })
         return await newEntry.save()
     }
+}
+
+export const getOutsideHours = async () => {
+    return await OutsideHours.find({}).then((res) => {
+        return res
+    })
 }
