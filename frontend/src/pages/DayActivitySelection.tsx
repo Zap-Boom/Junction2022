@@ -33,7 +33,7 @@ const ActivityComponent: React.FC<{ text: string, selectOption: any, id: string 
     );
 };
 
-const DayActivitySelection: React.FC = () => {
+const DayActivitySelection: React.FC<{todos: any[]}> = (todos) => {
     // Store users selected activities in an array for testing now
     const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
 
@@ -43,6 +43,9 @@ const DayActivitySelection: React.FC = () => {
         if(selected){
             if(!selectedActivities.includes(option)){
                 setSelectedActivities([...selectedActivities, option])
+                fetch('http://localhost:3001')
+                    // .then((response) => response.json())
+                    .then((data) => console.log(data));
             }
         } else {
             if(selectedActivities.includes(option)){
@@ -54,19 +57,14 @@ const DayActivitySelection: React.FC = () => {
         }
     }
 
-    console.log("selected activities: ", selectedActivities);
-
-
 
     return (
         <Page title={"Today I want to"}>
-            <ActivityComponent text={"Do the laundry"} selectOption={selectOption} id={"laundry"}/>
-            <ActivityComponent text={"Dry clothes using a dryer"} selectOption={selectOption} id={"dryer"}/>
-            <ActivityComponent text={"Warm a sauna"} selectOption={selectOption} id={"sauna"}/>
-            <ActivityComponent text={"Charge an electric car"} selectOption={selectOption} id={"car"}/>
-            <ActivityComponent text={"Cook food in the oven"} selectOption={selectOption} id={"oven"}/>
-            <ActivityComponent text={"Make coffee"} selectOption={selectOption} id={"coffee"}/>
-            <ActivityComponent text={"Add a custom type"} selectOption={selectOption} id={"custom"}/>
+            <div>
+                {todos.todos.map((todo) => {
+                    return (<ActivityComponent id={todo.name} text={todo.name} key={todo.name} selectOption={selectOption} />)
+                })}
+            </div>
         </Page>
     );
 };
