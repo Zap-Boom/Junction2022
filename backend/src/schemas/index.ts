@@ -3,12 +3,12 @@ import mongoose, { model, Model, Schema } from "mongoose"
 export interface ITodo {
     name: string
     level: String
-    time: string
+    time: Date
 }
 
 export interface IScheduleItem {
     name: string
-    happeningAt: Date
+    time: Date
     level?: String
     type: string
 }
@@ -21,15 +21,15 @@ export interface IElectrictyPrice {
 
 export const TodoSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
-    level: { type: String, required: true },
-    time: { type: String, maxlength: 5, required: true },
+    level: { type: String, required: true, enum: ["LOW", "MEDIUM", "HIGH"] },
+    time: { type: Date, maxlength: 5, required: true },
 })
 
 export const ScheduleItemSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
-    happeningAt: { type: Date, required: true },
+    time: { type: Date, required: true },
     type: { type: String, enum: ["CALENDAR_ENTRY", "TODO_ENTRY"] },
-    level: { type: String, enum: ["LOW", "MEDIUM", "HIGH"], maxlength: 5 },
+    level: { type: String, enum: ["LOW", "MEDIUM", "HIGH"] },
 })
 
 export const ElectricityPriceSchema: Schema = new mongoose.Schema({
