@@ -1,6 +1,7 @@
 import { ITodo, Todo } from "../schemas"
 import { parseISO, setHours } from "date-fns"
 import { db } from "../app"
+import { Schema } from "mongoose"
 
 export const insertTodo = async (todo: ITodo) => {
     const todoItem = new Todo(todo)
@@ -19,6 +20,10 @@ export const getTodos = async () => {
     return await Todo.find({}).then((res) => {
         return res
     })
+}
+
+export const updateTodos = async (id: string, isChosen: boolean) => {
+    return await Todo.findByIdAndUpdate(id, { isChosen })
 }
 
 const defaultTodos = () => {
@@ -114,8 +119,8 @@ const defaultTodos = () => {
             startMinute: 0,
             endHour: 23,
             endMinute: 59,
-            isHeating: true
-        }),
+            isHeating: true,
+        })
     )
 
     return todoItems

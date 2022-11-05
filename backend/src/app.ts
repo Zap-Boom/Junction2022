@@ -1,17 +1,21 @@
 import express, { Application, Request, Response } from "express"
-import mongoose from "mongoose"
+import mongoose, { Schema } from "mongoose"
 import {
     getTodos,
     insertDefaultTodos,
     insertTodo,
+    updateTodos,
 } from "./controllers/todoController"
-import {createMockData, getElectricityPrices} from "./controllers/electricityPriceController"
+import {
+    createMockData,
+    getElectricityPrices,
+} from "./controllers/electricityPriceController"
 import { insertOutsideHours } from "./controllers/outsideHoursController"
 import { IOutsideHours, Todo } from "./schemas"
 import bodyParser from "body-parser"
 import { parseISO } from "date-fns"
-import {calculateSchedule} from "./controllers/scheduleMaker";
-var cors = require("cors");
+import { calculateSchedule } from "./controllers/scheduleMaker"
+var cors = require("cors")
 
 // Start Mongoose connection
 const uri: string = "mongodb://localhost:27017/junction"
@@ -23,7 +27,7 @@ db.once("open", function () {
 
 const app: Application = express()
 app.use(bodyParser.json())
-app.use(cors());
+app.use(cors())
 const port: number = 3001
 createMockData()
 insertDefaultTodos()
@@ -33,7 +37,7 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello ")
 })
 
-app.use(cors());
+app.use(cors())
 app.post("/todo", async (req: Request, res: Response) => {
     const body = req.body
     let success = false
@@ -73,6 +77,18 @@ app.get("/todos", async (req: Request, res: Response) => {
 app.get("/electricity-prices", async (req: Request, res: Response) => {
     const electricityPrices = await getElectricityPrices()
     res.json(electricityPrices)
+})
+
+app.put("/todo/:id", async (req: Request, res: Response) => {
+    const body = req.body
+    let success = false
+    if (body.isChosen != null && req.params != null && req.params.id != null) {
+        let idParam: string = req.params.id
+        await updateTodos(idParam, body.isChosen)
+        success = true
+    }
+    res.status(success ? 200 : 400)
+    res.send("")
 })
 
 app.post("/outside-hours", async (req: Request, res: Response) => {
