@@ -4,33 +4,47 @@ import Page from "../components/page";
 
 const ActivityComponent: React.FC<{
   text: string;
-  selectOption: any;
   id: string;
-}> = ({ text, selectOption, id }) => {
+}> = ({ text, id }) => {
   const [selected, setSelected] = useState<boolean>(false);
 
   useEffect(() => {
-    selectOption(id, selected);
+    // selectOption(id, selected);
+    const body = {
+      isChosen: selected,
+    };
+
+    console.log("Selected: ", selected);
+    console.log("body: ", JSON.stringify(body));
+
+    // TODO: Change this to a PUT
+    fetch(`http://localhost:3001/todo/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }).then((data) => console.log(data));
   }, [selected]);
 
   let imgSrc = "";
   let showText = text;
   switch (text) {
-    case "Laundry":
+    case "Do laundry":
       imgSrc = "/images/activities/laundry.png";
       showText = "Do laundry";
       break;
-    case "Dryer":
+    case "Run the dryer":
       showText = "Use a clothes dryer";
       imgSrc = "/images/activities/laundry.png";
       break;
-    case "Make coffee":
+    case "Brew some coffee":
       imgSrc = "/images/activities/coffee.png";
       break;
-    case "Cook":
+    case "Cook some dinner":
       imgSrc = "/images/activities/cook.png";
       break;
-    case "Charge car":
+    case "Charge the car":
       showText = "Charge an electric car";
       imgSrc = "/images/activities/car.png";
       break;
@@ -38,11 +52,11 @@ const ActivityComponent: React.FC<{
       showText = "Go to the sauna";
       imgSrc = "/images/activities/sauna.png";
       break;
-    case "Dishes":
+    case "Do the dishes":
       showText = "Use the diswasher";
       imgSrc = "/images/activities/dishes.png";
       break;
-    case "Watch TV":
+    case "Watch some TV":
       imgSrc = "/images/activities/tv.png";
       break;
     case "Floor Heating":
@@ -64,7 +78,7 @@ const ActivityComponent: React.FC<{
           </div>
           <div>
             <br />
-            <b>{showText}</b>
+            <b>{text}</b>
           </div>
         </div>
       </button>
@@ -97,44 +111,12 @@ const ActivityComponent: React.FC<{
 };
 
 const DayActivitySelection: React.FC<{ todos: any[] }> = (todos) => {
-  // Store users selected activities in an array for testing now
-  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
-
-  function selectOption(option: string, selected: boolean) {
-    // TODO: Make these call an endpoint instead
-    console.log("selected option " + option + " as " + selected);
-    if (selected) {
-      if (!selectedActivities.includes(option)) {
-        setSelectedActivities([...selectedActivities, option]);
-
-        // TODO: Change this to a PUT
-        fetch("http://localhost:3001")
-          // .then((response) => response.json())
-          .then((data) => console.log(data));
-      }
-    } else {
-      if (selectedActivities.includes(option)) {
-        const selectedActivitiesWithoutOption = selectedActivities.filter(
-          function (selectedOption) {
-            return selectedOption !== option;
-          }
-        );
-        setSelectedActivities(selectedActivitiesWithoutOption);
-      }
-    }
-  }
-
   return (
     <Page title={"Today I want to"} gradientBg={false}>
       <div>
         {todos.todos.map((todo) => {
           return (
-            <ActivityComponent
-              id={todo.name}
-              text={todo.name}
-              key={todo.name}
-              selectOption={selectOption}
-            />
+            <ActivityComponent id={todo._id} text={todo.name} key={todo.name} />
           );
         })}
       </div>
