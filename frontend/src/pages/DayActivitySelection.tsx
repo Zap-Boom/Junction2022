@@ -13,6 +13,32 @@ const ActivityComponent: React.FC<{
     selectOption(id, selected);
   }, [selected]);
 
+  let imgSrc = "";
+  switch (text) {
+    case "Laundry":
+    case "Dryer":
+      imgSrc = "/images/activities/laundry.png";
+      break;
+    case "Make coffee":
+      imgSrc = "/images/activities/coffee.png";
+      break;
+    case "Cook":
+      break;
+    case "Charge car":
+      imgSrc = "/images/activities/car.png";
+      break;
+    case "Sauna":
+      imgSrc = "/images/activities/sauna.png";
+      break;
+    case "Dishes":
+      imgSrc = "/images/activities/dishes.png";
+      break;
+    case "Watch TV":
+      break;
+    case "Floor heating":
+      break;
+  }
+
   return (
     <div key={text}>
       <button
@@ -22,7 +48,7 @@ const ActivityComponent: React.FC<{
       >
         <div className="dayTypeContainer">
           <div>
-            <img src="https://i.imgur.com/rA5XE67.png" alt="Button" />
+            <img src={imgSrc} alt="Button" width={100} />
           </div>
           <div>
             <br />
