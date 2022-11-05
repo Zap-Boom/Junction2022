@@ -14,28 +14,40 @@ const ActivityComponent: React.FC<{
   }, [selected]);
 
   let imgSrc = "";
+  let showText = text;
   switch (text) {
     case "Laundry":
+      imgSrc = "/images/activities/laundry.png";
+      showText = "Do laundry";
+      break;
     case "Dryer":
+      showText = "Use a clothes dryer";
       imgSrc = "/images/activities/laundry.png";
       break;
     case "Make coffee":
       imgSrc = "/images/activities/coffee.png";
       break;
     case "Cook":
+      imgSrc = "/images/activities/cook.png";
       break;
     case "Charge car":
+      showText = "Charge an electric car";
       imgSrc = "/images/activities/car.png";
       break;
     case "Sauna":
+      showText = "Go to the sauna";
       imgSrc = "/images/activities/sauna.png";
       break;
     case "Dishes":
+      showText = "Use the diswasher";
       imgSrc = "/images/activities/dishes.png";
       break;
     case "Watch TV":
+      imgSrc = "/images/activities/tv.png";
       break;
-    case "Floor heating":
+    case "Floor Heating":
+      showText = "Use the floor heating";
+      imgSrc = "/images/activities/heating.png";
       break;
   }
 
@@ -52,7 +64,7 @@ const ActivityComponent: React.FC<{
           </div>
           <div>
             <br />
-            <b>{text}</b>
+            <b>{showText}</b>
           </div>
         </div>
       </button>
@@ -94,6 +106,8 @@ const DayActivitySelection: React.FC<{ todos: any[] }> = (todos) => {
     if (selected) {
       if (!selectedActivities.includes(option)) {
         setSelectedActivities([...selectedActivities, option]);
+
+        // TODO: Change this to a PUT
         fetch("http://localhost:3001")
           // .then((response) => response.json())
           .then((data) => console.log(data));
