@@ -8,25 +8,23 @@ import DayPlanSelection from "./pages/DayPlanSelection";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
-  const [view, setView] = useState("start");
+  // const [view, setView] = useState("start");
+  const [view, setView] = useState("dayActivitySelection");
 
   useEffect(() => {
-    console.log("Fetching options from API");
     fetch("http://localhost:3001/todos")
       .then((response) => response.json())
       .then((data) => {
         setTodos(data);
       });
   }, []);
-  console.log(typeof todos);
-  console.log(todos);
 
   const handleContinueClick = () => {
     switch (view) {
-      case "start":
-        setView("dayActivitySelection");
-        swapView(<DayActivitySelection todos={todos} />);
-        break;
+      // case "start":
+      //   setView("dayActivitySelection");
+      //   swapView(<DayActivitySelection todos={todos} />);
+      //   break;
       case "dayActivitySelection":
         setView("dayPlanSelection");
         swapView(<DayPlanSelection />);
@@ -48,17 +46,18 @@ const App: React.FC = () => {
         setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
-      case "dayActivitySelection":
-        setView("start");
-        swapView(<FrontPage />);
-        break;
+      // case "dayActivitySelection":
+      //   setView("start");
+      //   swapView(<FrontPage />);
+      //   break;
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto my-2">
       <div id="view">
-        <FrontPage />
+        {/* <FrontPage /> */}
+        <DayActivitySelection todos={todos} />
       </div>
       <button className="mx-5" onClick={() => handleBackClick()}>
         Back
