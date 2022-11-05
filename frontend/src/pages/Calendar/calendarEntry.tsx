@@ -1,5 +1,5 @@
 import React from "react";
-import { Item } from "../types";
+import { Item } from "../../types";
 
 type Props = {
   item: Item;
@@ -16,7 +16,7 @@ const CalEntry = (props: Props) => {
         <div className="absolute w-6 h-6 -mt-3 bg-blue-500 rounded-full shadow top-1/2"></div>
       </div>
       <div className="col-start-2 col-end-10 p-4 my-4 mr-auto bg-blue-500 border shadow-md rounded-xl">
-        <h3 className="mb-1 text-lg font-semibold"> 14:00 - {item.title} </h3>
+        <h3 className="mb-1 text-lg font-semibold"> 14:00 - {item.name} </h3>
         <p className="leading-tight text-justify">Get it done, boothang!</p>
       </div>
     </div>

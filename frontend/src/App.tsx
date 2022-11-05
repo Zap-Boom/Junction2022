@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Calendar from "./components/calendar";
-import TodoList from "./components/todoList";
+import Calendar from "./pages/Calendar/calendar";
 import { swapView } from "./components/utils";
 import "./styles/global.css";
-import { Item } from "./types";
 import FrontPage from "./pages/FrontPage";
 import DayActivitySelection from "./pages/DayActivitySelection";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<any[]>([]);
   const [view, setView] = useState("start");
-
-  const dummyList: Item[] = [
-    {
-      title: "list item 1",
-    },
-    {
-      title: "list item 2",
-    },
-    {
-      title: "list item 3",
-    },
-  ];
 
   useEffect(() => {
     console.log("Fetching options from API");
@@ -31,6 +17,8 @@ const App: React.FC = () => {
         setTodos(data);
       });
   }, []);
+  console.log(typeof todos);
+  console.log(todos);
 
   const handleContinueClick = () => {
     switch (view) {
@@ -40,7 +28,7 @@ const App: React.FC = () => {
         break;
       case "plan":
         setView("cal");
-        swapView(<Calendar list={dummyList} />);
+        swapView(<Calendar list={todos} />);
         break;
     }
   };
@@ -53,7 +41,7 @@ const App: React.FC = () => {
         break;
       case "plan":
         setView("start");
-        swapView(<TodoList list={dummyList} />);
+        swapView(<FrontPage />);
         break;
     }
   };
@@ -61,7 +49,7 @@ const App: React.FC = () => {
   return (
     <div>
       <div id="view">
-        <TodoList list={dummyList} />
+        <FrontPage />
       </div>
       <button className="mx-5" onClick={() => handleContinueClick()}>
         Continue
