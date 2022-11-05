@@ -20,6 +20,18 @@ const App: React.FC = () => {
   //   setStayingAtHome(stayingAtHomeState);
   // }
 
+  async function callScheduleBackend() {
+    await fetch("http://localhost:3001/schedule", {
+      method: "POST",
+    });
+
+    await fetch("http://localhost:3001/schedule")
+      .then((response) => response.json())
+      .then((data) => {
+        setSchedule(data);
+      });
+  }
+
   useEffect(() => {
     fetch("http://localhost:3001/todos")
       .then((response) => response.json())
@@ -27,28 +39,45 @@ const App: React.FC = () => {
         setTodos(data);
       });
 
-    fetch("http://localhost:3001/schedule", {
-      method: "POST",
-    }).then((response) => response.json());
+    // // declare the data fetching function
+    // const fetchData = async () => {
+    //   await callScheduleBackend();
+    // };
 
-    fetch("http://localhost:3001/schedule")
-      .then((response) => response.json())
-      .then((data) => {
-        setSchedule(data);
-      });
+    // // call the function
+    // fetchData()
+    //   // make sure to catch any error
+    //   .catch(console.error);
+
+    // await callScheduleBackend();
+
+    // fetch("http://localhost:3001/schedule", {
+    //   method: "POST",
+    // }).then((response) => response.json());
+
+    // fetch("http://localhost:3001/schedule")
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setSchedule(data);
+    //   });
   }, []);
 
   console.log(todos);
   console.log(schedule);
-  const handleContinueClick = () => {
+  const handleContinueClick = async () => {
     switch (view) {
       case "start":
         setView("dayActivitySelection");
         swapView(<DayActivitySelection todos={todos} />);
         break;
       case "dayActivitySelection":
+        await callScheduleBackend().then(() => {
+          console.log("asd");
+        });
+
         setView("cal");
         swapView(<Calendar list={todos} />);
+
         // setView("dayPlanSelection");
         // swapView(<DayPlanSelection />);
         break;
