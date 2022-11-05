@@ -16,11 +16,12 @@ const App: React.FC = () => {
       title: "list item 3",
     },
   ];
+
   return (
     <div>
       <p className="text-sm font-medium text-orange-200">Hello, yall</p>
       <TodoList list={dummyList} />
-      <Calendar />
+      <Calendar list={dummyList} />
     </div>
   );
 };
