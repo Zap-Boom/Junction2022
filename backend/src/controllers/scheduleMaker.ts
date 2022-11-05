@@ -5,6 +5,7 @@ import {
     IScheduleItem,
     ITodo,
     ScheduleItem,
+    Todo,
 } from "../schemas"
 import { getElectricityPrices } from "./electricityPriceController"
 import { getOutsideHours } from "./outsideHoursController"
@@ -18,12 +19,17 @@ import {
     setSeconds,
     setMilliseconds,
 } from "date-fns"
-import { start } from "repl"
 import { db } from "../app"
 
 interface ISchedulerResponse {
     remainingSlots: IElectrictyPrice[]
     todosToRemove: ITodo[]
+}
+
+export const getSchedule = async (): Promise<IScheduleItem[]> => {
+    return await ScheduleItem.find({}).then((res) => {
+        return res
+    })
 }
 
 export const calculateSchedule = async () => {
@@ -35,7 +41,29 @@ export const calculateSchedule = async () => {
     const sortedPrices = sortedElectricityPrices(electricityPrices)
     if (await db.collection("scheduleitems").find({}))
         await db.collection("scheduleitems").deleteMany({})
-    setHighPrioTodos(todos, outsideHours, sortedPrices)
+    let responseHighCons: ISchedulerResponse = await insertScheduleItems(
+        todos,
+        outsideHours,
+        sortedPrices,
+        "HIGH"
+    )
+    if (responseHighCons.remainingSlots.length > 0) {
+        console.log(responseHighCons.remainingSlots.length)
+        let responseMedCons: ISchedulerResponse = await insertScheduleItems(
+            todos,
+            outsideHours,
+            responseHighCons.remainingSlots,
+            "MEDIUM"
+        )
+        if (responseMedCons.remainingSlots.length > 0) {
+            await insertScheduleItems(
+                todos,
+                outsideHours,
+                responseMedCons.remainingSlots,
+                "LOW"
+            )
+        }
+    }
 }
 
 const sortedElectricityPrices = (
@@ -44,13 +72,15 @@ const sortedElectricityPrices = (
     return _.sortBy(input, "eurCentkWh")
 }
 
-const setHighPrioTodos = async (
+const insertScheduleItems = async (
     todos: ITodo[],
     outsideHours: IOutsideHours | null,
-    prices: IElectrictyPrice[]
+    prices: IElectrictyPrice[],
+    consumption: string
 ): Promise<ISchedulerResponse> => {
     const highConsumptionArr: ITodo[] = _.where(todos, {
         isChosen: true,
+        level: consumption,
     })
     let scheduleItems: IScheduleItem[] = []
     let timeSlotsToRemove: Date[] = []
@@ -59,25 +89,18 @@ const setHighPrioTodos = async (
         earliestAllowedTime = setMinutes(earliestAllowedTime, todo.startMinute)
         earliestAllowedTime = setSeconds(earliestAllowedTime, 0)
         earliestAllowedTime = setMilliseconds(earliestAllowedTime, 0)
-        // ###########################################################
-        // ADJUST ADDHOURS FUNCTION ACCORDINGLY, OTHERWISE SOME TASKS WON'T BE GENERATED
-        // ##########################################################
-        earliestAllowedTime = addHours(earliestAllowedTime, 8)
         let latestAllowedTime = setHours(new Date(), todo.endHour)
         latestAllowedTime = setMinutes(latestAllowedTime, todo.endMinute)
         latestAllowedTime = setSeconds(latestAllowedTime, 0)
         latestAllowedTime = setMilliseconds(latestAllowedTime, 0)
-        // ###########################################################
-        // ADJUST ADDHOURS FUNCTION ACCORDINGLY, OTHERWISE SOME TASKS WON'T BE GENERATED
-        // ##########################################################
-        latestAllowedTime = addHours(latestAllowedTime, 8)
 
         let matchingTimeslots: IElectrictyPrice[] = _.filter(
             prices,
             (price: IElectrictyPrice) => {
                 return (
                     price.startDate >= earliestAllowedTime &&
-                    price.endDate < latestAllowedTime
+                    price.endDate < latestAllowedTime &&
+                    price.startDate >= new Date()
                 )
             }
         )
@@ -120,7 +143,9 @@ const setHighPrioTodos = async (
             scheduleItems.push(scheduleItem)
         }
     })
-    await db.collection("scheduleitems").insertMany(scheduleItems)
+    if (scheduleItems.length > 0) {
+        await db.collection("scheduleitems").insertMany(scheduleItems)
+    }
     return {
         remainingSlots: prices,
         todosToRemove: highConsumptionArr,

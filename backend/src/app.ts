@@ -14,9 +14,14 @@ import { insertOutsideHours } from "./controllers/outsideHoursController"
 import { IOutsideHours, Todo } from "./schemas"
 import bodyParser from "body-parser"
 import { parseISO } from "date-fns"
-import { calculateSchedule } from "./controllers/scheduleMaker"
+import { calculateSchedule, getSchedule } from "./controllers/scheduleMaker"
+import timemachine from "timemachine"
 var cors = require("cors")
 
+// SET THIS TO RUN SERVER IN A CERTAIN TIME
+timemachine.config({
+    dateString: "November 06, 2022 06:00:00",
+})
 // Start Mongoose connection
 const uri: string = "mongodb://localhost:27017/junction"
 mongoose.connect(uri)
@@ -31,7 +36,6 @@ app.use(cors())
 const port: number = 3001
 createMockData()
 insertDefaultTodos()
-calculateSchedule()
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello ")
@@ -43,13 +47,13 @@ app.post("/todo", async (req: Request, res: Response) => {
     let success = false
     if (
         body != null &&
-        body.startHour &&
-        body.startMinute &&
-        body.endHour &&
-        body.endMinute &&
-        body.duration &&
-        body.name &&
-        body.level
+        body.startHour != null &&
+        body.startMinute != null &&
+        body.endHour != null &&
+        body.endMinute != null &&
+        body.duration != null &&
+        body.name != null &&
+        body.level != null
     ) {
         const input = new Todo({
             name: body.name,
@@ -102,6 +106,17 @@ app.post("/outside-hours", async (req: Request, res: Response) => {
     }
     await insertOutsideHours(input)
     res.send("OK!")
+})
+
+app.post("/schedule", async (req: Request, res: Response) => {
+    await calculateSchedule()
+    res.status(201)
+    res.send("")
+})
+
+app.get("/schedule", async (req: Request, res: Response) => {
+    res.status(201)
+    res.send(await getSchedule())
 })
 
 app.listen(port, function () {
