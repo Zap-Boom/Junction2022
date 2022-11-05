@@ -26,7 +26,7 @@ const App: React.FC = () => {
     switch (view) {
       case "start":
         setView("plan");
-        swapView(<p>plan</p>);
+        swapView(<DayActivitySelection />);
         break;
       case "plan":
         setView("cal");
@@ -38,7 +38,7 @@ const App: React.FC = () => {
     switch (view) {
       case "cal":
         setView("plan");
-        swapView(<p>plan</p>);
+        swapView(<DayActivitySelection />);
         break;
       case "plan":
         setView("start");
@@ -58,11 +58,6 @@ const App: React.FC = () => {
       <button className="mx-5" onClick={() => handleBackClick()}>
         Back
       </button>
-        <FrontPage />
-        <DayActivitySelection />
-      <p className="text-sm font-medium text-orange-200">Hello, yall</p>
-      <TodoList list={dummyList} />
-      <Calendar list={dummyList} />
     </div>
   );
 };
