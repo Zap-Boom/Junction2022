@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express"
 import mongoose from "mongoose"
-import { insertTodo } from "./controllers/todoController"
+import {insertDefaultTodos, insertTodo} from "./controllers/todoController"
 import { createMockData } from "./controllers/electricityPriceController"
 import { insertOutsideHours } from "./controllers/outsideHoursController"
 import { IOutsideHours } from "./schemas"
@@ -19,6 +19,7 @@ const app: Application = express()
 app.use(bodyParser.json())
 const port: number = 3001
 createMockData()
+insertDefaultTodos();
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello ")
