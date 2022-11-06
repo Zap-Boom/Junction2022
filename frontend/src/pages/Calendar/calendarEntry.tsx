@@ -20,7 +20,7 @@ const CalEntry = (props: Props) => {
           {item.taskEnd.split("T")[1].split(".")[0]}
         </h3>
         <h3 className="mb-1 text-lg font-bold">{item.name}</h3>
-        <p className="mb-1 text-sm">The average for this timeslot is kWh/€ is 0.{item.price}kWh/€</p>
+        <p className="mb-1 text-sm">The average for this timeslot is 0.{item.price}kWh/€</p>
       </div>
     </div>
   );

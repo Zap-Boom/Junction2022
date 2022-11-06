@@ -8,10 +8,11 @@ type Props = {
 const Calendar = (props: Props) => {
   const { data } = props;
   const chosenList = data.filter((i: any) => i.isChosen);
+  const objADate = new Date();
+  const objBDate = new Date();
   const sortedAsc = chosenList.sort(
     (objA: any, objB: any) =>
-      Number(objA.taskStart.split("T")[1].split(".")[0].split(":")[0]) -
-      Number(objB.taskEnd.split("T")[1].split(".")[0].split(":")[0])
+      new Date(objA.taskStart).getTime() - new Date(objB.taskStart).getTime()
   );
 
   return (
