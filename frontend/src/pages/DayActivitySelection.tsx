@@ -99,7 +99,7 @@ const ActivityComponent: React.FC<{
   }
 
   return (
-    <div id={`${id}_main`} key={text} className="p-2 ">
+    <div id={`${id}_main`} key={text} className="p-2 m-2">
       <button
         onClick={() => {
           setSelected(!selected);
