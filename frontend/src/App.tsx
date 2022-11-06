@@ -15,16 +15,16 @@ const App: React.FC = () => {
   const [schedule, setSchedule] = useState<any[]>([]);
 
   async function callScheduleBackend() {
-    await fetch("http://localhost:3001/schedule", {
+    await fetch("http://46.101.205.67:3001/schedule", {
       method: "POST",
     }).then(async () => {
-      await fetch("http://localhost:3001/schedule")
+      await fetch("http://46.101.205.67:3001/schedule")
         .then((response) => response.json())
         .then((data) => {
           setSchedule(data);
         })
         .then(async () => {
-          await fetch("http://localhost:3001/todos")
+          await fetch("http://46.101.205.67:3001/todos")
             .then((response) => response.json())
             .then((data) => {
               setTodos(data);
@@ -43,16 +43,16 @@ const App: React.FC = () => {
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
-      await fetch("http://localhost:3001/schedule", {
+      await fetch("http://46.101.205.67:3001/schedule", {
         method: "POST",
       }).then(async () => {
-        await fetch("http://localhost:3001/schedule")
+        await fetch("http://46.101.205.67:3001/schedule")
           .then((response) => response.json())
           .then((data) => {
             setSchedule(data);
           })
           .then(async () => {
-            await fetch("http://localhost:3001/todos")
+            await fetch("http://46.101.205.67:3001/todos")
               .then((response) => response.json())
               .then((data) => {
                 setFinalTodos(data);

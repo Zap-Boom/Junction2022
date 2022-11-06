@@ -29,7 +29,7 @@ const ActivityComponent: React.FC<{
     document.getElementById(`${level}_${id}`)?.classList.add("btnSelected");
 
     // TODO: Change this to a PUT
-    fetch(`http://localhost:3001/todo/${id}`, {
+    fetch(`http://46.101.205.67:3001/todo/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -51,7 +51,7 @@ const ActivityComponent: React.FC<{
     e.target.classList.add("btnSelected");
 
     // TODO: Change this to a PUT
-    fetch(`http://localhost:3001/todo/${id}`, {
+    fetch(`http://46.101.205.67:3001/todo/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
