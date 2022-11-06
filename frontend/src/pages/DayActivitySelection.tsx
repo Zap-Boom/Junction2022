@@ -16,15 +16,17 @@ const ActivityComponent: React.FC<{
     };
 
     if (selected) {
-      document.getElementById(`${id}_main`)?.classList.add('todoSelected');
+      document.getElementById(`${id}_main`)?.classList.add("todoSelected");
     } else {
-      document.getElementById(`${id}_main`)?.classList.remove('todoSelected');
+      document.getElementById(`${id}_main`)?.classList.remove("todoSelected");
     }
     const consumptionLevels: string[] = ["LOW", "MEDIUM", "HIGH"];
     consumptionLevels.forEach((consumptionLevel) => {
-      document.getElementById(`${consumptionLevel}_${id}`)?.classList.remove('btnSelected');
-    })
-    document.getElementById(`${level}_${id}`)?.classList.add('btnSelected');
+      document
+        .getElementById(`${consumptionLevel}_${id}`)
+        ?.classList.remove("btnSelected");
+    });
+    document.getElementById(`${level}_${id}`)?.classList.add("btnSelected");
 
     // TODO: Change this to a PUT
     fetch(`http://localhost:3001/todo/${id}`, {
@@ -42,9 +44,11 @@ const ActivityComponent: React.FC<{
     };
     const consumptionLevels: string[] = ["LOW", "MEDIUM", "HIGH"];
     consumptionLevels.forEach((consumptionLevel) => {
-      document.getElementById(`${consumptionLevel}_${id}`)?.classList.remove('btnSelected');
-    })
-    e.target.classList.add('btnSelected');
+      document
+        .getElementById(`${consumptionLevel}_${id}`)
+        ?.classList.remove("btnSelected");
+    });
+    e.target.classList.add("btnSelected");
 
     // TODO: Change this to a PUT
     fetch(`http://localhost:3001/todo/${id}`, {
@@ -95,7 +99,7 @@ const ActivityComponent: React.FC<{
   }
 
   return (
-    <div id={`${id}_main`} key={text}>
+    <div id={`${id}_main`} key={text} className="p-2 ">
       <button
         onClick={() => {
           setSelected(!selected);
@@ -116,13 +120,31 @@ const ActivityComponent: React.FC<{
           <div className="electricityConsumptionButtonContainer">
             Select the electricity consumption estimation:
             <br />
-            <button id={"LOW_"+id} onClick={(e: any) => {updateConsumptionLevel("LOW", e)}} className="electricityConsumptionButton btnGreen">
+            <button
+              id={"LOW_" + id}
+              onClick={(e: any) => {
+                updateConsumptionLevel("LOW", e);
+              }}
+              className="electricityConsumptionButton btnGreen"
+            >
               Low
             </button>
-            <button id={"MEDIUM_"+id} onClick={(e: any) => {updateConsumptionLevel("MEDIUM", e)}} className="electricityConsumptionButton btnYellow btnSelected">
+            <button
+              id={"MEDIUM_" + id}
+              onClick={(e: any) => {
+                updateConsumptionLevel("MEDIUM", e);
+              }}
+              className="electricityConsumptionButton btnYellow btnSelected"
+            >
               Medium
             </button>
-            <button id={"HIGH_"+id} onClick={(e: any) => {updateConsumptionLevel("HIGH", e)}} className="electricityConsumptionButton btnRed">
+            <button
+              id={"HIGH_" + id}
+              onClick={(e: any) => {
+                updateConsumptionLevel("HIGH", e);
+              }}
+              className="electricityConsumptionButton btnRed"
+            >
               High
             </button>
           </div>
@@ -145,7 +167,12 @@ const DayActivitySelection: React.FC<{ data: any[] }> = ({ data }) => {
       <div>
         {data.map((todo) => {
           return (
-            <ActivityComponent level={todo.level} id={todo._id} text={todo.name} key={todo.name} />
+            <ActivityComponent
+              level={todo.level}
+              id={todo._id}
+              text={todo.name}
+              key={todo.name}
+            />
           );
         })}
       </div>
