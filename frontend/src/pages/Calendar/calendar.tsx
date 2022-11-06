@@ -1,5 +1,4 @@
 import React from "react";
-import { Item } from "../../types";
 import CalEntry from "./calendarEntry";
 
 type Props = {
@@ -9,6 +8,12 @@ type Props = {
 const Calendar = (props: Props) => {
   const { data } = props;
   const chosenList = data.filter((i: any) => i.isChosen);
+  const sortedAsc = chosenList.sort(
+    (objA: any, objB: any) =>
+      Number(objA.taskStart.split("T")[1].split(".")[0].split(":")[0]) -
+      Number(objB.taskEnd.split("T")[1].split(".")[0].split(":")[0])
+  );
+
   return (
     <div>
       <div className="max-w-2xl mx-auto my-2">
@@ -19,7 +24,7 @@ const Calendar = (props: Props) => {
           <div className="px-5">
             <div className="container">
               <div className="flex flex-col grid-cols-9 p-2 mx-auto md:grid text-blue-50">
-                {chosenList.map((i: any) => (
+                {sortedAsc.map((i: any) => (
                   <CalEntry key="i.title" item={i} />
                 ))}
               </div>
