@@ -89,6 +89,7 @@ const App: React.FC = () => {
         break;
       case "dayActivitySelection":
         setView("cal");
+        callScheduleBackend();
         swapView(<Calendar data={appData} />);
         break;
     }

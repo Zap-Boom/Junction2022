@@ -57,6 +57,10 @@ h1 {
   border: 2px solid black;
 }
 
+.todoSelected {
+  border: 1px solid #5dda22;
+}
+
 .btnGreen {
   background-color: #5dda22;
 }

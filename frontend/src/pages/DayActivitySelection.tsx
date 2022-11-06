@@ -5,7 +5,8 @@ import Page from "../components/page";
 const ActivityComponent: React.FC<{
   text: string;
   id: string;
-}> = ({ text, id }) => {
+  level?: string;
+}> = ({ text, id, level }) => {
   const [selected, setSelected] = useState<boolean>(false);
 
   useEffect(() => {
@@ -13,6 +14,17 @@ const ActivityComponent: React.FC<{
     const body = {
       isChosen: selected,
     };
+
+    if (selected) {
+      document.getElementById(`${id}_main`)?.classList.add('todoSelected');
+    } else {
+      document.getElementById(`${id}_main`)?.classList.remove('todoSelected');
+    }
+    const consumptionLevels: string[] = ["LOW", "MEDIUM", "HIGH"];
+    consumptionLevels.forEach((consumptionLevel) => {
+      document.getElementById(`${consumptionLevel}_${id}`)?.classList.remove('btnSelected');
+    })
+    document.getElementById(`${level}_${id}`)?.classList.add('btnSelected');
 
     // TODO: Change this to a PUT
     fetch(`http://localhost:3001/todo/${id}`, {
@@ -23,6 +35,26 @@ const ActivityComponent: React.FC<{
       body: JSON.stringify(body),
     });
   }, [selected]);
+
+  async function updateConsumptionLevel(consumptionLevel: string, e: any) {
+    const body = {
+      level: consumptionLevel,
+    };
+    const consumptionLevels: string[] = ["LOW", "MEDIUM", "HIGH"];
+    consumptionLevels.forEach((consumptionLevel) => {
+      document.getElementById(`${consumptionLevel}_${id}`)?.classList.remove('btnSelected');
+    })
+    e.target.classList.add('btnSelected');
+
+    // TODO: Change this to a PUT
+    fetch(`http://localhost:3001/todo/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  }
 
   let imgSrc = "";
   let showText = text;
@@ -63,7 +95,7 @@ const ActivityComponent: React.FC<{
   }
 
   return (
-    <div key={text}>
+    <div id={`${id}_main`} key={text}>
       <button
         onClick={() => {
           setSelected(!selected);
@@ -84,13 +116,13 @@ const ActivityComponent: React.FC<{
           <div className="electricityConsumptionButtonContainer">
             Select the electricity consumption estimation:
             <br />
-            <button className="electricityConsumptionButton btnGreen">
+            <button id={"LOW_"+id} onClick={(e: any) => {updateConsumptionLevel("LOW", e)}} className="electricityConsumptionButton btnGreen">
               Low
             </button>
-            <button className="electricityConsumptionButton btnYellow btnSelected">
+            <button id={"MEDIUM_"+id} onClick={(e: any) => {updateConsumptionLevel("MEDIUM", e)}} className="electricityConsumptionButton btnYellow btnSelected">
               Medium
             </button>
-            <button className="electricityConsumptionButton btnRed">
+            <button id={"HIGH_"+id} onClick={(e: any) => {updateConsumptionLevel("HIGH", e)}} className="electricityConsumptionButton btnRed">
               High
             </button>
           </div>
@@ -113,7 +145,7 @@ const DayActivitySelection: React.FC<{ data: any[] }> = ({ data }) => {
       <div>
         {data.map((todo) => {
           return (
-            <ActivityComponent id={todo._id} text={todo.name} key={todo.name} />
+            <ActivityComponent level={todo.level} id={todo._id} text={todo.name} key={todo.name} />
           );
         })}
       </div>
